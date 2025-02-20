@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:16.3
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: socialnetwork
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpassword
+      POSTGRES_SSL: "true"
+      POSTGRES_SSL_CERT_FILE: "/etc/postgresql/certs/server.crt"
+      POSTGRES_SSL_KEY_FILE: "/etc/postgresql/certs/server.key"
+      PGSSLMODE: "verify-full"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./certs/server.crt:/etc/postgresql/certs/server.crt:ro
+      - ./certs/server.key:/etc/postgresql/certs/server.key:ro
+    ports:
+      - "5432:5432"
+    command: -c ssl=on -c ssl_cert_file=/etc/postgresql/certs/server.crt -c ssl_key_file=/etc/postgresql/certs/server.key
